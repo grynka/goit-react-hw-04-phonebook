@@ -4,24 +4,23 @@ import ContactList from "./Contactlist/ContactList";
 import { useState, useEffect } from "react";
 
 export default function App() {
-const [contacts, setContacts] = useState([])
+const [contacts, setContacts] = useState(() => {
+  const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts !== null) {
+      return JSON.parse(localStorage.getItem('contacts'))
+      }
+      return []
+})
 const [filter, setFilter] = useState('')
 const normalizedFilter = filter.toLowerCase();
 const filterContacts = contacts.filter(contact =>
 contact.name.toLowerCase().includes(normalizedFilter))
 
-useEffect(() => {
-  const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts !== null) {
-      console.log(savedContacts)
-      setContacts(JSON.parse(localStorage.getItem('contacts')))
-      }
-}, [])
+
 
 useEffect(() => {
-  if(!contacts )
-     {localStorage.setItem('contacts', JSON.stringify(contacts))}
-})
+  localStorage.setItem('contacts', JSON.stringify(contacts))
+}, [contacts])
 
 const formSubmitHandler = data => {
     const contactsName = (contacts.map(contact => contact.name))
