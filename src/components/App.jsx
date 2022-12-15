@@ -9,17 +9,19 @@ const [filter, setFilter] = useState('')
 const normalizedFilter = filter.toLowerCase();
 const filterContacts = contacts.filter(contact =>
 contact.name.toLowerCase().includes(normalizedFilter))
-const savedContacts = localStorage.getItem('contacts');
 
 useEffect(() => {
+  const savedContacts = localStorage.getItem('contacts');
     if (savedContacts !== null) {
-      setContacts(JSON.parse(savedContacts))
+      console.log(savedContacts)
+      setContacts(JSON.parse(localStorage.getItem('contacts')))
       }
 }, [])
 
 useEffect(() => {
-  localStorage.setItem('contacts', JSON.stringify(contacts))
-}, [contacts])
+  if(!contacts )
+     {localStorage.setItem('contacts', JSON.stringify(contacts))}
+})
 
 const formSubmitHandler = data => {
     const contactsName = (contacts.map(contact => contact.name))
